@@ -3,13 +3,13 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  // devtool: 'cheap-eval-source-map',
+  devtool: 'cheap-eval-source-map',
   entry: {
     app: [
       'react-hot-loader/patch',
       './src/index'
     ],
-    vendor: ['react', 'react-dom']
+    vendor: ['react', 'react-dom', 'react-router-dom', 'mobx', 'mobx-react']
   },
   output: {
     path: path.resolve(__dirname, './dist'),
