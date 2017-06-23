@@ -3,7 +3,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  devtool: 'cheap-eval-source-map',
+  devtool: 'inline-source-map',
   entry: {
     app: [
       'react-hot-loader/patch',
@@ -18,7 +18,13 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
+      { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] },
+      { test: /\.css$/, exclude: /node_modules/, use:
+        [
+          { loader: 'style-loader' }, 
+          { loader: 'css-loader', options: { importLoaders: 1}},
+          { loader: 'postcss-loader' }
+        ] }
     ]
   },
   plugins: [

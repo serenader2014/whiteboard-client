@@ -1,0 +1,20 @@
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+
+  .login-card {
+    min-width: 300px;
+  }
+
+  .login-avatar {
+    margin: 1em;
+    text-align: center;
+  }
+
+  form {
+    padding: 0 1em 1em 1em;
+  }
+}

@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import { CircularProgress } from 'material-ui'
+
+import './style.css'
 
 export default class Bundle extends Component {
   state = {
@@ -27,6 +30,6 @@ export default class Bundle extends Component {
   }
 
   render() {
-    return this.state.mod ? this.props.children(this.state.mod) : null
+    return this.state.mod ? this.props.children(this.state.mod) : <div className="loading-page-wrapper"><CircularProgress size={60} /></div>
   }
 }
