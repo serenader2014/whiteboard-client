@@ -7,11 +7,30 @@ export default class UserStore {
   @observable isAuthenticated = false
 
   login({ email, password }) {
-    request('/api/v1/login', {
+    return request('/api/v1/login', {
       method: 'POST',
       data: { email, password }
     }).promise.then(res => {
-      console.log(res)
+      if (res.status == 200) {
+        this.currentUser = res.body
+        this.isAuthenticated = true
+        return res.body
+      } else {
+        return Promise.reject(res.body)
+      }
+    })
+  }
+
+  register({ email, password }) {
+    return request('/api/v1/register', {
+      method: 'POST',
+      data: { email, password }
+    }).promise.then(res => {
+      if (res.status == 200) {
+        return res.body
+      } else {
+        return Promise.reject(res.body)
+      }
     })
   }
 

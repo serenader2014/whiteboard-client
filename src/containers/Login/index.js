@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { RaisedButton, Card, TextField, Avatar } from 'material-ui'
+import { RaisedButton, Card, TextField, Avatar, Dialog, FlatButton } from 'material-ui'
 import { CardActions } from 'material-ui/Card'
 import LockIcon from 'material-ui/svg-icons/action/lock-outline'
 import { observer, inject } from 'mobx-react'
@@ -15,19 +15,45 @@ import './style.css'
 export default class Login extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    showDialog: false
   }
 
   handleLogin = e => {
     e.preventDefault()
-    this.props.userStore.login(this.state)
+    const userInfo = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    this.props.userStore.login(userInfo).then(user => {
+
+    }, e => {
+      this.setState({
+        showDialog: true,
+        message: e.message
+      })
+    })
+  }
+
+  handleCloseDialog = () => {
+    this.setState({
+      showDialog: false
+    })
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Close"
+        primary={true}
+        onTouchTap={this.handleCloseDialog}
+      />,
+    ]
+
     return (
-      <div className="login-wrapper">
-        <Card className="login-card">
-          <div className="login-avatar">
+      <div className="auth-wrapper">
+        <Card className="auth-card">
+          <div className="auth-avatar">
             <Avatar icon={<LockIcon />} size={60}/>
             <h3>Login</h3>
           </div>
@@ -62,6 +88,14 @@ export default class Login extends Component {
             </CardActions>
           </form>
         </Card>
+        <Dialog
+          actions={actions}
+          modal={false}
+          open={this.state.showDialog}
+          onRequestClose={this.handleCloseDialog}
+        >
+          {this.state.message}
+        </Dialog>
       </div>
     )
   }

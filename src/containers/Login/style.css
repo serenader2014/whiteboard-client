@@ -1,15 +1,15 @@
-.login-wrapper {
+.auth-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   align-items: center;
   justify-content: center;
 
-  .login-card {
+  .auth-card {
     min-width: 300px;
   }
 
-  .login-avatar {
+  .auth-avatar {
     margin: 1em;
     text-align: center;
   }

@@ -2,10 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'mobx-react'
 import { AppContainer } from 'react-hot-loader'
+import injectTapEventPlugin from 'react-tap-event-plugin'
 
 import App from './App'
 import AppStore from './stores/app'
 import UserStore from './stores/user'
+
+injectTapEventPlugin()
 
 const appStore = new AppStore()
 const userStore = new UserStore()
