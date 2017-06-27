@@ -13,9 +13,14 @@ import './style.css'
 @inject('userStore')
 @observer
 export default class Login extends Component {
+  state = {
+    email: '',
+    password: ''
+  }
+
   handleLogin = e => {
     e.preventDefault()
-    this.props.userStore.login()
+    this.props.userStore.login(this.state)
   }
 
   render() {
@@ -24,13 +29,28 @@ export default class Login extends Component {
         <Card className="login-card">
           <div className="login-avatar">
             <Avatar icon={<LockIcon />} size={60}/>
+            <h3>Login</h3>
           </div>
           <form onSubmit={this.handleLogin}>
             <div>
-              <TextField floatingLabelText="User name" fullWidth name="username" />
+              <TextField
+                type="email"
+                value={this.state.email}
+                onChange={e => this.setState({ email: e.target.value })}
+                floatingLabelText="Email"
+                fullWidth
+                name="email"
+              />
             </div>
             <div>
-              <TextField floatingLabelText="Password" fullWidth name="password" />
+              <TextField
+                type="password"
+                value={this.state.password}
+                onChange={e => this.setState({ password: e.target.value })}
+                floatingLabelText="Password"
+                fullWidth
+                name="password" 
+              />
             </div>
             <CardActions>
               <RaisedButton 

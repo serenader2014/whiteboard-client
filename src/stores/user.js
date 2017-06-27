@@ -4,12 +4,11 @@ export default class UserStore {
   @observable currentUser = null
   @observable isAuthenticated = false
 
-  login() {
+  login({ username, password }) {
     return new Promise(resolve => {
-      console.log('login')
+      console.log(username, password)
       setTimeout(() => {
         this.isAuthenticated = true
-        console.log('updated auth')
         resolve()
       }, 1000)
     })

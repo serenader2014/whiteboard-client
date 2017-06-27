@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { inject, observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
+
 
 export default function checkAuth(requireAuth) {
   return function(Component) {
@@ -7,11 +8,11 @@ export default function checkAuth(requireAuth) {
     @inject('userStore')
     @observer
     class CheckAuth extends Component {
-      componentWillUpdate() {
+      componentWillMount() {
         this.checkStatus()
       }
 
-      componentWillMount() {
+      componentWillReact() {
         this.checkStatus()
       }
 
