@@ -6,7 +6,6 @@ import { observer, inject } from 'mobx-react'
 import { Link } from 'react-router-dom'
 
 import checkAuth from '../../utils/check-auth'
-import r from '../../utils/request'
 
 import './style.css'
 
@@ -22,16 +21,6 @@ export default class Login extends Component {
   handleLogin = e => {
     e.preventDefault()
     this.props.userStore.login(this.state)
-  }
-
-  componentDidMount() {
-    const req = r('http://localhost:8098/api/v1/users/self', 'GET')
-    console.log(req)
-    req.promise.then(res => {
-      console.log(res)
-    }, e => {
-      console.log(e)
-    })
   }
 
   render() {

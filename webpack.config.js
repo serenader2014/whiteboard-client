@@ -36,5 +36,13 @@ module.exports = {
       title: 'Whiteboard Admin',
       template: './index.ejs'
     }),
-  ]
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devServer: {
+    hot: true,
+    historyApiFallback: true,
+    proxy: {
+      '/api': 'http://localhost:8098'
+    }
+  }
 }

@@ -9,8 +9,13 @@ import loadHomePage from 'bundle-loader?lazy&name=homepage!./containers/HomePage
 import lazyLoadComponent from './utils/lazy-load-component'
 
 @inject('appStore')
+@inject('userStore')
 @observer
 export default class App extends Component {
+  componentDidMount() {
+    this.props.userStore.getCurrentUser()
+  }
+
   render() {
     const { theme, themeType } = this.props.appStore
     return (
