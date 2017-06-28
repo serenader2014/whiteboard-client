@@ -6,7 +6,7 @@ const WebpackMd5Hash = require('webpack-md5-hash')
 module.exports = {
   entry: {
     app: './src/index',
-    vendor: ['react', 'react-dom', 'react-router-dom', 'mobx', 'mobx-react']
+    vendor: ['react', 'react-dom', 'react-router-dom', 'mobx', 'mobx-react', 'material-ui']
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -25,7 +25,7 @@ module.exports = {
           { loader: 'postcss-loader' }
         ]
       },
-      { test: /\.(png|svg|jpg|jpeg|gif)$/, use: ['file-loader'] }
+      { test: /\.(png|svg|jpg|jpeg|gif)$/, use: [{ loader: 'file-loader', options: { outputPath: 'admin/assets/images/' } }] }
     ]
   },
   plugins: [
