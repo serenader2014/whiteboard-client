@@ -4,6 +4,7 @@ import { CardActions } from 'material-ui/Card'
 import LockIcon from 'material-ui/svg-icons/action/lock-outline'
 import { observer, inject } from 'mobx-react'
 import propTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import checkAuth from '../../utils/check-auth'
 
@@ -11,10 +12,12 @@ import './style.css'
 
 @checkAuth(false)
 @inject('userStore')
+@inject('appStore')
 @observer
 export default class Login extends Component {
   static propTypes = {
-    userStore: propTypes.object
+    userStore: propTypes.object,
+    appStore: propTypes.object
   }
 
   state = {
@@ -54,12 +57,22 @@ export default class Login extends Component {
         onTouchTap={this.handleCloseDialog}
       />
     ]
+    const { palette } = this.props.appStore.theme.baseTheme
+    const wrapperStyle = {
+      background: palette.accent2Color
+    }
+    const tipStyle = {
+      color: palette.secondaryTextColor
+    }
+    const avatarIconStyle = {
+      backgroundColor: palette.accent1Color
+    }
 
     return (
-      <div className="auth-wrapper">
+      <div className="auth-wrapper" style={wrapperStyle}>
         <Card className="auth-card">
           <div className="auth-avatar">
-            <Avatar icon={<LockIcon />} size={60}/>
+            <Avatar style={avatarIconStyle} icon={<LockIcon />} size={60}/>
             <h3>Login</h3>
           </div>
           <form onSubmit={this.handleLogin}>
@@ -92,6 +105,7 @@ export default class Login extends Component {
               />
             </CardActions>
           </form>
+          <p className="auth-tips"><Link style={tipStyle} to="/admin/register">Register</Link></p>
         </Card>
         <Dialog
           actions={actions}

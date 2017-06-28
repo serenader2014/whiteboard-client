@@ -21,4 +21,14 @@
   h3 {
     color: #999;
   }
+
+  .auth-tips {
+    text-align: right;
+    margin: 0;
+    padding: 0 1.6em 2em;
+    a {
+      font-size: 14px;
+      text-decoration: none;
+    }
+  }
 }

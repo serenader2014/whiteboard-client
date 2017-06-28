@@ -21,6 +21,17 @@ export default class UserStore {
     })
   }
 
+  logout() {
+    return GET('/api/v1/logout').promise.then(res => {
+      if (res.status === 200) {
+        this.currentUser = null
+        this.isAuthenticated = false
+      } else {
+        return Promise.reject(res.body)
+      }
+    })
+  }
+
   register({ email, password }) {
     return request('/api/v1/register', {
       method: 'POST',
