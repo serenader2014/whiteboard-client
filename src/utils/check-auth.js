@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-
+import propTypes from 'prop-types'
 
 export default function checkAuth(requireAuth) {
-  return function(Component) {
-
+  return function(Comp) {
     @inject('userStore')
     @observer
     class CheckAuth extends Component {
+      static propTypes = {
+        userStore: propTypes.object,
+        history: propTypes.object
+      }
+
       componentWillMount() {
         this.checkStatus()
       }
@@ -30,8 +34,9 @@ export default function checkAuth(requireAuth) {
       }
 
       render() {
+        /* eslint-disable no-unused-vars */
         const { isAuthenticated } = this.props.userStore
-        return <Component {...this.props} />
+        return <Comp {...this.props} />
       }
     }
 

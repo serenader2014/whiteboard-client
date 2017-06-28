@@ -1,0 +1,18 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["standard", "plugin:react/recommended"],
+  "env": {
+    "browser": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "rules": {
+    "space-before-function-paren": ["error", "never"],
+    "import/no-webpack-loader-syntax": 0
+  },
+  "plugins": ["react"]
+}

@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import { CircularProgress } from 'material-ui'
+import propTypes from 'prop-types'
 
 import './style.css'
 
 export default class Bundle extends Component {
+  static propTypes = {
+    load: propTypes.func,
+    children: propTypes.func
+  }
+
   state = {
     mod: null
   }
@@ -13,7 +19,7 @@ export default class Bundle extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.load != this.props.load) {
+    if (nextProps.load !== this.props.load) {
       this.load(nextProps)
     }
   }

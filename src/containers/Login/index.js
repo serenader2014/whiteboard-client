@@ -3,7 +3,7 @@ import { RaisedButton, Card, TextField, Avatar, Dialog, FlatButton } from 'mater
 import { CardActions } from 'material-ui/Card'
 import LockIcon from 'material-ui/svg-icons/action/lock-outline'
 import { observer, inject } from 'mobx-react'
-import { Link } from 'react-router-dom'
+import propTypes from 'prop-types'
 
 import checkAuth from '../../utils/check-auth'
 
@@ -13,6 +13,10 @@ import './style.css'
 @inject('userStore')
 @observer
 export default class Login extends Component {
+  static propTypes = {
+    userStore: propTypes.object
+  }
+
   state = {
     email: '',
     password: '',
@@ -42,12 +46,13 @@ export default class Login extends Component {
   }
 
   render() {
+    /* eslint-disable react/jsx-key */
     const actions = [
       <FlatButton
         label="Close"
         primary={true}
         onTouchTap={this.handleCloseDialog}
-      />,
+      />
     ]
 
     return (
@@ -75,11 +80,11 @@ export default class Login extends Component {
                 onChange={e => this.setState({ password: e.target.value })}
                 floatingLabelText="Password"
                 fullWidth
-                name="password" 
+                name="password"
               />
             </div>
             <CardActions>
-              <RaisedButton 
+              <RaisedButton
                 label="SIGN IN"
                 primary
                 type="submit"

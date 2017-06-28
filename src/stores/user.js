@@ -11,7 +11,7 @@ export default class UserStore {
       method: 'POST',
       data: { email, password }
     }).promise.then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         this.currentUser = res.body
         this.isAuthenticated = true
         return res.body
@@ -26,7 +26,7 @@ export default class UserStore {
       method: 'POST',
       data: { email, password }
     }).promise.then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         return res.body
       } else {
         return Promise.reject(res.body)
@@ -36,7 +36,7 @@ export default class UserStore {
 
   getCurrentUser() {
     GET('/api/v1/users/self').promise.then(res => {
-      if (res.status == 200) {
+      if (res.status === 200) {
         this.currentUser = res.body
         this.isAuthenticated = true
       }

@@ -3,7 +3,7 @@ import { RaisedButton, Card, TextField, Avatar, Dialog, FlatButton } from 'mater
 import { CardActions } from 'material-ui/Card'
 import LockIcon from 'material-ui/svg-icons/action/lock-outline'
 import { observer, inject } from 'mobx-react'
-import { Link } from 'react-router-dom'
+import propTypes from 'prop-types'
 
 import checkAuth from '../../utils/check-auth'
 
@@ -13,6 +13,11 @@ import '../Login/style.css'
 @inject('userStore')
 @observer
 export default class Register extends Component {
+  static propTypes = {
+    userStore: propTypes.object,
+    history: propTypes.object
+  }
+
   state = {
     email: '',
     password: '',
@@ -57,6 +62,7 @@ export default class Register extends Component {
   }
 
   render() {
+    /* eslint-disable react/jsx-key */
     const actions = [
       <FlatButton
         label="Cancel"
@@ -96,11 +102,11 @@ export default class Register extends Component {
                 onChange={e => this.setState({ password: e.target.value })}
                 floatingLabelText="Password"
                 fullWidth
-                name="password" 
+                name="password"
               />
             </div>
             <CardActions>
-              <RaisedButton 
+              <RaisedButton
                 label="REGISTER"
                 primary
                 type="submit"
