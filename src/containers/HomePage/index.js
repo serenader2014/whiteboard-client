@@ -10,8 +10,8 @@ export default class HomePage extends Component {
       <div>
         <p>This is homepage</p>
         <ul>
-          <li><Link to="/login">login</Link></li>
-          <li><Link to="/register">register</Link></li>
+          <li><Link to="/admin/login">login</Link></li>
+          <li><Link to="/admin/register">register</Link></li>
         </ul>
       </div>
     )

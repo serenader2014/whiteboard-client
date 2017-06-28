@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { MuiThemeProvider } from 'material-ui/styles'
 import { observer, inject } from 'mobx-react'
 
@@ -22,9 +22,10 @@ export default class App extends Component {
       <MuiThemeProvider muiTheme={theme}>
         <Router>
           <div>
-            <Route exact path="/" component={lazyLoadComponent(loadHomePage)} />
-            <Route exact path="/register" component={lazyLoadComponent(loadRegister)} />
-            <Route exact path="/login" component={lazyLoadComponent(loadLogin)} />
+            <Route exact path="/admin" component={lazyLoadComponent(loadHomePage)} />
+            <Route exact path="/admin/register" component={lazyLoadComponent(loadRegister)} />
+            <Route exact path="/admin/login" component={lazyLoadComponent(loadLogin)} />
+            <Redirect from="*" to="/admin" />
           </div>
         </Router>
       </MuiThemeProvider>

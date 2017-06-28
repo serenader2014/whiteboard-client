@@ -20,11 +20,11 @@ export default function checkAuth(requireAuth) {
         const { isAuthenticated } = this.props.userStore
         if (requireAuth) {
           if (!isAuthenticated) {
-            this.props.history.push('/login')
+            this.props.history.push('/admin/login')
           }
         } else {
           if (isAuthenticated) {
-            this.props.history.push('/')
+            this.props.history.push('/admin')
           }
         }
       }
