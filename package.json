@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "rm -r dist && NODE_ENV=production webpack -p --config webpack.config.prod.js"
+    "build": "npm run clean && NODE_ENV=production webpack -p --config webpack.config.prod.js",
+    "clean": "[ -d \"dist\" ] && rm -r dist || echo folder not exist"
   },
   "keywords": [],
   "author": "",
