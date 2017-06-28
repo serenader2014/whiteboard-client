@@ -20,18 +20,21 @@ module.exports = {
   module: {
     rules: [
       { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] },
-      { test: /\.css$/, exclude: /node_modules/, use:
-        [
-          { loader: 'style-loader' }, 
-          { loader: 'css-loader', options: { importLoaders: 1}},
+      { test: /\.css$/,
+        exclude: /node_modules/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader', options: { importLoaders: 1 } },
           { loader: 'postcss-loader' }
-        ] }
+        ]
+      },
+      { test: /\.(png|svg|jpg|jpeg|gif)$/, use: ['file-loader'] }
     ]
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: Infinity,
+      minChunks: Infinity
     }),
     new HtmlWebpackPlugin({
       title: 'Whiteboard Admin',

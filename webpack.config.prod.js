@@ -16,19 +16,22 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.css$/, exclude: /node_modules/, use:
-        [
-          { loader: 'style-loader' }, 
-          { loader: 'css-loader', options: { importLoaders: 1}},
+      { test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' },
+      { test: /\.css$/,
+        exclude: /node_modules/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader', options: { importLoaders: 1 } },
           { loader: 'postcss-loader' }
-        ] }
+        ]
+      },
+      { test: /\.(png|svg|jpg|jpeg|gif)$/, use: ['file-loader'] }
     ]
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: Infinity,
+      minChunks: Infinity
     }),
     new WebpackMd5Hash(),
     new HtmlWebpackPlugin({
