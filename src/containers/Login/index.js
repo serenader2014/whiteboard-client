@@ -13,11 +13,13 @@ import './style.css'
 @checkAuth(false)
 @inject('userStore')
 @inject('appStore')
+// @inject('message')
 @observer
 export default class Login extends Component {
   static propTypes = {
     userStore: propTypes.object,
-    appStore: propTypes.object
+    appStore: propTypes.object,
+    message: propTypes.object
   }
 
   state = {
@@ -33,7 +35,7 @@ export default class Login extends Component {
       password: this.state.password
     }
     this.props.userStore.login(userInfo).then(user => {
-
+      // this.props.message.showMessage(`Welcome back, ${user.username} !`)
     }, e => {
       this.setState({
         showDialog: true,
