@@ -9,7 +9,7 @@ module.exports = {
       'react-hot-loader/patch',
       './src/index'
     ],
-    vendor: ['react', 'react-dom', 'react-router-dom', 'mobx', 'mobx-react', 'material-ui']
+    vendor: ['react', 'react-dom', 'react-router-dom', 'mobx', 'mobx-react', 'material-ui', 'material-ui-icons', 'classnames']
   },
   output: {
     path: path.resolve(__dirname, './dist'),

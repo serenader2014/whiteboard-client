@@ -29,7 +29,7 @@ export default class App extends Component {
     const { theme, themeType } = this.props.appStore
     const { open, message, action, autoHideDuration, onActionTouchTap, onRequestClose } = this.props.message
     return (
-      <MuiThemeProvider muiTheme={theme}>
+      <MuiThemeProvider>
         <Router>
           <div style={{ height: '100%' }}>
             <Switch>
