@@ -63,7 +63,7 @@ export default class Header extends Component {
     }, classes } = this.props
 
     return (
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton color="contrast"><MenuIcon /></IconButton>
           <Typography color="inherit" type="title" className={classes.title}>Whiteboard Admin</Typography>

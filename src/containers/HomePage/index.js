@@ -14,10 +14,12 @@ import lazyLoadComponent from '../../utils/lazy-load-component'
 
 const homePageStyleSheet = createStyleSheet('Homepage', theme => ({
   root: {
-
+    height: '100%'
   },
   contentWrapper: {
-
+    backgroundColor: theme.palette.background.default,
+    height: '100%',
+    paddingLeft: 240
   }
 }))
 
@@ -25,7 +27,8 @@ const homePageStyleSheet = createStyleSheet('Homepage', theme => ({
 @withStyles(homePageStyleSheet)
 export default class HomePage extends Component {
   static propTypes = {
-    classes: propTypes.object
+    classes: propTypes.object,
+    history: propTypes.object
   }
 
   render() {
@@ -33,7 +36,7 @@ export default class HomePage extends Component {
     return (
       <div className={classes.root}>
         <Header />
-        <Sidebar />
+        <Sidebar history={this.props.history} />
         <div className={classes.contentWrapper}>
           <Route exact path="/admin/posts" component={lazyLoadComponent(loadPosts)} />
         </div>

@@ -1,12 +1,28 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
+import { CircularProgress } from 'material-ui/Progress'
+import { withStyles, createStyleSheet } from 'material-ui/styles'
 
-import './style.css'
+const style = createStyleSheet('PageLoading', {
+  wrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 9999,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
 
+@withStyles(style)
 export default class Bundle extends Component {
   static propTypes = {
     load: propTypes.func,
-    children: propTypes.func
+    children: propTypes.func,
+    classes: propTypes.object
   }
 
   state = {
@@ -35,6 +51,8 @@ export default class Bundle extends Component {
   }
 
   render() {
-    return this.state.mod ? this.props.children(this.state.mod) : <div>loading</div>
+    const { classes } = this.props
+    return this.state.mod
+      ? this.props.children(this.state.mod) : <div className={classes.wrapper}><CircularProgress /></div>
   }
 }
