@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Paper, Typography, Divider } from 'material-ui'
+import { Paper, Typography, Divider, IconButton, Avatar } from 'material-ui'
 import { CircularProgress } from 'material-ui/Progress'
-import List, { ListItem, ListItemText, ListSubheader } from 'material-ui/List'
+import List, { ListItem, ListItemText, ListSubheader, ListItemSecondaryAction } from 'material-ui/List'
 import { withStyles, createStyleSheet } from 'material-ui/styles'
-import { pink, blue } from 'material-ui/styles/colors'
+import { pink } from 'material-ui/styles/colors'
 import propTypes from 'prop-types'
 import { observer, inject } from 'mobx-react'
 import { Link } from 'react-router-dom'
+import { ModeEdit as EditIcon } from 'material-ui-icons'
 
 import { getPostsList } from '../../actions/posts'
 
@@ -32,8 +33,9 @@ const style = createStyleSheet('Posts', theme => ({
   },
   postAuthor: {
     color: pink[400],
-    margin: '0 8px',
+    marginRight: 8,
     textDecoration: 'none',
+    display: 'flex',
     '&:hover': {
       color: pink[700]
     }
@@ -42,16 +44,16 @@ const style = createStyleSheet('Posts', theme => ({
     width: 20,
     height: 20,
     borderRadius: '100%',
-    marginRight: 5,
     position: 'relative',
-    top: 5
+    marginRight: 10
   },
   postTitle: {
     color: theme.palette.text.primary,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline'
-    }
+    textDecoration: 'none'
+  },
+  postMeta: {
+    display: 'flex',
+    marginTop: '0.2em'
   }
 }))
 
@@ -81,12 +83,16 @@ export default class Posts extends Component {
     const { classes } = this.props
     return (
       <span>
-        Published by
-        <Link to={`/admin/users/${post.user.id}`} className={classes.postAuthor}>
-          <img className={classes.postAuthorAvatar} src={post.user.image || defaultAvatar} />
-          {post.user.username}
-        </Link>
-        on {fromNow(post.publish_at)}
+        <span>
+          <Link to={`/admin/users/${post.user.id}`} className={classes.postAuthor}>
+            <img className={classes.postAuthorAvatar} src={post.user.image || defaultAvatar} />
+            {post.user.username}
+          </Link>
+          on {fromNow(post.publish_at)}
+        </span>
+        <span>
+          sorted in {post.category.name}
+        </span>
       </span>
     )
   }
@@ -122,11 +128,22 @@ export default class Posts extends Component {
             {
               postsList.map(post => (
                 <div key={post.id}>
-                  <ListItem>
-                    <ListItemText
-                      primary={<Link className={classes.postTitle} to={`/admin/posts/${post.id}`}>{post.title}</Link>}
-                      secondary={this.renderPostMeta(post)}
-                    />
+                  <ListItem button>
+                    <div>
+                      <Typography type="subheading">
+                        <Link className={classes.postTitle} to={`/admin/posts/${post.id}`}>{post.title}</Link>
+                      </Typography>
+                      <Typography color="secondary" className={classes.postMeta} type="body1" headlineMapping={{ body1: 'div' }}>
+                        <Link to={`/admin/users/${post.user.id}`} className={classes.postAuthor}>
+                          <Avatar className={classes.postAuthorAvatar} src={post.user.image || defaultAvatar} />
+                          {post.user.username}
+                        </Link>
+                        on {fromNow(post.publish_at)}
+                      </Typography>
+                    </div>
+                    <ListItemSecondaryAction>
+                      <IconButton><EditIcon /></IconButton>
+                    </ListItemSecondaryAction>
                   </ListItem>
                   <Divider light/>
                 </div>
