@@ -9,7 +9,7 @@ import { observer, inject } from 'mobx-react'
 import { Link } from 'react-router-dom'
 import { ModeEdit as EditIcon } from 'material-ui-icons'
 
-import { getPostsList } from '../../actions/posts'
+import { requestPostsList } from '../../actions/post'
 
 import { fromNow } from '../../utils/date-parser'
 
@@ -71,7 +71,7 @@ export default class Posts extends Component {
   }
 
   componentDidMount() {
-    getPostsList().then(data => {
+    requestPostsList().then(data => {
       this.props.postStore.updatePostsList(data)
       this.setState({
         loadedData: true

@@ -1,6 +1,6 @@
 import { GET } from '../utils/request'
 
-export function getPostsList() {
+export function requestPostsList() {
   return GET('/api/v1/posts', {
     query: {
       include: 'user,category'

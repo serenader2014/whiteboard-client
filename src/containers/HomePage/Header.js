@@ -6,9 +6,11 @@ import {
   Typography,
   IconButton,
   Avatar,
-  Divider
+  Divider,
+  Button
 } from 'material-ui'
 import Menu, { MenuItem } from 'material-ui/Menu'
+import Dialog, { DialogContent, DialogContentText, DialogActions } from 'material-ui/Dialog'
 import {
   Menu as MenuIcon,
   ExitToApp as LogoutIcon,
@@ -17,6 +19,8 @@ import {
 
 import { inject, observer } from 'mobx-react'
 import propTypes from 'prop-types'
+
+import { requestLogout } from '../../actions/user'
 
 import defaultAvatar from '../../assets/images/avatar-placeholder.jpeg'
 
@@ -31,17 +35,21 @@ const headerStyleSheet = createStyleSheet('Header', theme => ({
 }))
 
 @inject('userStore')
+@inject('message')
 @observer
 @withStyles(headerStyleSheet)
 export default class Header extends Component {
   static propTypes = {
     userStore: propTypes.object,
-    classes: propTypes.object
+    classes: propTypes.object,
+    history: propTypes.object,
+    message: propTypes.object
   }
 
   state = {
     showMenu: false,
-    anchorEl: null
+    anchorEl: null,
+    showDialog: false
   }
 
   handleShowMenu = e => {
@@ -57,10 +65,30 @@ export default class Header extends Component {
     })
   }
 
+  handleLogout = () => {
+    requestLogout().then(() => {
+      this.setState({
+        showDialog: true,
+        showMenu: false
+      })
+    }).catch(e => {
+      /* eslint-disable no-mixed-operators */
+      this.props.message.showMessage(e && e.message || e)
+    })
+  }
+
+  handleGoToLogin = () => {
+    this.props.userStore.logout()
+    this.props.history.push('/admin/login')
+  }
+
   render() {
-    const { userStore: {
-      currentUser
-    }, classes } = this.props
+    const {
+      userStore: {
+        currentUser
+      },
+      classes
+    } = this.props
 
     return (
       <AppBar position="fixed">
@@ -75,11 +103,22 @@ export default class Header extends Component {
           >
             <MenuItem><AccountIcon className={classes.menuIcon} />{currentUser.username}</MenuItem>
             <Divider />
-            <MenuItem><LogoutIcon className={classes.menuIcon}/>Logout</MenuItem>
+            <MenuItem onClick={this.handleLogout}><LogoutIcon className={classes.menuIcon}/>Logout</MenuItem>
           </Menu>
         </Toolbar>
+        <Dialog
+          open={this.state.showDialog}
+          ignoreBackdropClick
+          ignoreEscapeKeyUp
+        >
+          <DialogContent>
+            <DialogContentText>You have successfully logout. Click Ok will lead you to the login page.</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleGoToLogin} color="primary">OK</Button>
+          </DialogActions>
+        </Dialog>
       </AppBar>
-
     )
   }
 }

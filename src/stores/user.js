@@ -1,58 +1,16 @@
 import { observable } from 'mobx'
 
-import request, { GET } from '../utils/request'
-
 export default class UserStore {
-  @observable currentUser = null
+  @observable currentUser = {}
   @observable isAuthenticated = false
 
-  login({ email, password }) {
-    return request('/api/v1/login', {
-      method: 'POST',
-      data: { email, password }
-    }).promise.then(res => {
-      if (res.status === 200) {
-        this.currentUser = res.body
-        this.isAuthenticated = true
-        return res.body
-      } else {
-        return Promise.reject(res.body)
-      }
-    })
-  }
-
   logout() {
-    return GET('/api/v1/logout').promise.then(res => {
-      if (res.status === 200) {
-        this.currentUser = null
-        this.isAuthenticated = false
-      } else {
-        return Promise.reject(res.body)
-      }
-    })
+    this.currentUser = {}
+    this.isAuthenticated = false
   }
 
-  register({ email, password }) {
-    return request('/api/v1/register', {
-      method: 'POST',
-      data: { email, password }
-    }).promise.then(res => {
-      if (res.status === 200) {
-        return res.body
-      } else {
-        return Promise.reject(res.body)
-      }
-    })
-  }
-
-  getCurrentUser() {
-    GET('/api/v1/users/self').promise.then(res => {
-      if (res.status === 200) {
-        this.currentUser = res.body
-        this.isAuthenticated = true
-      }
-    }, e => {
-
-    })
+  setCurrentUser(user) {
+    this.currentUser = user
+    this.isAuthenticated = true
   }
 }

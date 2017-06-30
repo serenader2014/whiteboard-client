@@ -1,13 +1,11 @@
 import { observable } from 'mobx'
 
-const noop = () => {}
-
 export default class MessageStore {
   @observable open = false
   @observable message = ''
   @observable action = null
   @observable autoHideDuration = 4000
-  onActionTouchTap = noop
+  @observable anchorOrigin = { vertical: 'bottom', horizontal: 'right' }
   onRequestClose = () => { this.open = false }
   showMessage(m) {
     if (typeof m === 'string') {

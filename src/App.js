@@ -10,6 +10,8 @@ import loadRegister from 'bundle-loader?lazy&name=register!./containers/Register
 import loadHomePage from 'bundle-loader?lazy&name=homepage!./containers/HomePage'
 import lazyLoadComponent from './utils/lazy-load-component'
 
+import { requestCurrentUser } from './actions/user'
+
 @inject('appStore')
 @inject('userStore')
 @inject('message')
@@ -21,13 +23,15 @@ export default class App extends Component {
     message: propTypes.object
   }
   componentDidMount() {
-    this.props.userStore.getCurrentUser()
+    requestCurrentUser().then(user => {
+      this.props.userStore.setCurrentUser(user)
+    }, e => console.log(e))
   }
 
   render() {
     /* eslint-disable no-unused-vars */
     const { theme, themeType } = this.props.appStore
-    const { open, message, action, autoHideDuration, onActionTouchTap, onRequestClose } = this.props.message
+    const { open, message, action, autoHideDuration, onRequestClose, anchorOrigin } = this.props.message
     return (
       <MuiThemeProvider>
         <Router>
@@ -43,8 +47,8 @@ export default class App extends Component {
               message={message}
               action={action}
               autoHideDuration={autoHideDuration}
-              onActionTouchTap={onActionTouchTap}
               onRequestClose={onRequestClose}
+              anchorOrigin={anchorOrigin}
             />
           </div>
         </Router>

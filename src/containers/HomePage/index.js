@@ -35,7 +35,7 @@ export default class HomePage extends Component {
     const { classes } = this.props
     return (
       <div className={classes.root}>
-        <Header />
+        <Header history={this.props.history} />
         <Sidebar history={this.props.history} />
         <div className={classes.contentWrapper}>
           <Route exact path="/admin/posts" component={lazyLoadComponent(loadPosts)} />
