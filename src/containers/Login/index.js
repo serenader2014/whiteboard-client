@@ -10,6 +10,8 @@ import { observer, inject } from 'mobx-react'
 import propTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
+import { requestLogin } from '../../actions/user'
+
 import checkAuth from '../../utils/check-auth'
 
 const style = createStyleSheet('Login', theme => ({
@@ -73,6 +75,9 @@ export default class Login extends Component {
 
   handleLogin = e => {
     e.preventDefault()
+    requestLogin({ email: this.state.email, password: this.state.password }).then(user => {
+      this.props.userStore.setCurrentUser(user)
+    })
   }
 
   render() {
