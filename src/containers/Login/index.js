@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button, TextField, Avatar, Dialog, Typography } from 'material-ui'
+import { Button, Avatar, Typography } from 'material-ui'
+import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog'
 import Card, { CardContent, CardActions } from 'material-ui/Card'
 import { withStyles, createStyleSheet } from 'material-ui/styles'
 import { blueGrey } from 'material-ui/styles/colors'
@@ -10,7 +11,10 @@ import { observer, inject } from 'mobx-react'
 import propTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
+import TextField from '../../components/TextField'
 import { requestLogin } from '../../actions/user'
+
+import { emailValidator, passwordValidator } from '../../utils/validator'
 
 import checkAuth from '../../utils/check-auth'
 
@@ -58,7 +62,10 @@ export default class Login extends Component {
 
   state = {
     email: '',
-    password: ''
+    password: '',
+    showDialog: false,
+    emailStatusOK: false,
+    passwordStatusOK: false
   }
 
   handleChangeEmail = e => {
@@ -73,15 +80,39 @@ export default class Login extends Component {
     })
   }
 
+  handleClickDialog = () => {
+    this.setState({
+      showDialog: false
+    })
+  }
+
   handleLogin = e => {
     e.preventDefault()
     requestLogin({ email: this.state.email, password: this.state.password }).then(user => {
       this.props.userStore.setCurrentUser(user)
+    }).catch(e => {
+      this.setState({
+        showDialog: true,
+        message: e.message
+      })
+    })
+  }
+
+  handleEmailStatusUpdate = obj => {
+    this.setState({
+      emailStatusOK: !obj.error
+    })
+  }
+
+  handlePasswordUpdate = obj => {
+    this.setState({
+      passwordStatusOK: !obj.error
     })
   }
 
   render() {
     const { classes } = this.props
+    const { passwordStatusOK, emailStatusOK, email, password } = this.state
 
     return (
       <div className={classes.wrapper}>
@@ -96,30 +127,42 @@ export default class Login extends Component {
                 <TextField
                   label="Email"
                   type="email"
-                  helperText="Please input a valid email"
-                  value={this.state.email}
+                  value={email}
                   onChange={this.handleChangeEmail}
                   className={classes.input}
                   required
                   marginForm
+                  validators={emailValidator}
+                  updateStatus={this.handleEmailStatusUpdate}
                 />
                 <TextField
                   label="Password"
                   type="password"
-                  helperText="Password's length is between 6 and 20"
-                  value={this.state.password}
+                  value={password}
                   onChange={this.handleChangePassword}
                   className={classes.input}
                   required
                   marginForm
+                  validators={passwordValidator}
+                  updateStatus={this.handlePasswordUpdate}
                 />
               </div>
             </CardContent>
             <CardActions>
-              <Button type="submit" className={classes.button} color="accent" raised>Login</Button>
+              <Button disabled={!emailStatusOK || !passwordStatusOK} type="submit" className={classes.button} color="accent" raised>Login</Button>
             </CardActions>
           </form>
         </Card>
+        <Dialog
+          open={this.state.showDialog}
+        >
+          <DialogContent>
+            <Typography>{this.state.message}</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClickDialog}>OK</Button>
+          </DialogActions>
+        </Dialog>
       </div>
     )
   }
