@@ -31,7 +31,6 @@ export default function checkAuth(requireAuth) {
         } else {
           if (isAuthenticated) {
             this.props.history.push('/admin')
-            this.redirect = true
           }
         }
         this.redirect = (requireAuth && !isAuthenticated) || (!requireAuth && isAuthenticated)
