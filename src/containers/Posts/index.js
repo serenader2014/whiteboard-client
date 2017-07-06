@@ -143,10 +143,11 @@ export default class Posts extends Component {
 
   }
 
-  handlePreviewPost = () => {
+  handlePreviewPost = (post) => {
     this.setState({
       showPostPreview: true,
-      showPostMenu: false
+      showPostMenu: false,
+      currentPost: post || this.state.currentPost
     })
   }
 
@@ -189,7 +190,7 @@ export default class Posts extends Component {
             {
               postsList.map(post => (
                 <div key={post.id}>
-                  <ListItem button>
+                  <ListItem button onClick={() => this.handlePreviewPost(post)}>
                     <div>
                       <Typography type="subheading">
                         <Link className={classes.postTitle} to={`/admin/posts/${post.id}`}>{post.title}</Link>

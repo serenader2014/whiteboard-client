@@ -8,6 +8,7 @@ import {
 } from 'material-ui-icons'
 import { withStyles, createStyleSheet } from 'material-ui/styles'
 import propTypes from 'prop-types'
+import c from 'classnames'
 
 const style = createStyleSheet('Sidebar', theme => ({
   paper: {
@@ -19,6 +20,9 @@ const style = createStyleSheet('Sidebar', theme => ({
   },
   bottomIconList: {
     flex: 'initial'
+  },
+  menuActive: {
+    background: theme.palette.action.disabled
   }
 }))
 
@@ -29,16 +33,29 @@ export default class Sidebar extends Component {
     history: propTypes.object,
     dockDrawer: propTypes.bool,
     open: propTypes.bool,
-    handleClose: propTypes.func
+    handleClose: propTypes.func,
+    location: propTypes.object
   }
 
   handleGoToPostsPage = () => {
-    this.props.history.push('/admin/posts')
+    if (!this.checkSelected(/^\/admin\/posts/)) {
+      this.props.history.push('/admin/posts')
+    }
     this.closeDrawerIfNeeded()
   }
 
   handleGoToDashboard = () => {
-    this.props.history.push('/admin')
+    if (!this.checkSelected(/^\/admin$/)) {
+      this.props.history.push('/admin')
+    }
+    this.closeDrawerIfNeeded()
+  }
+
+  handleGoToSettings = () => {
+    if (!this.checkSelected(/^\/admin\/settings/)) {
+      this.props.history.push('/admin/settings')
+    }
+
     this.closeDrawerIfNeeded()
   }
 
@@ -47,6 +64,11 @@ export default class Sidebar extends Component {
     if (!dockDrawer) {
       handleClose()
     }
+  }
+
+  checkSelected = (reg) => {
+    const result = this.props.location.pathname.match(reg)
+    return !!result
   }
 
   render() {
@@ -59,13 +81,21 @@ export default class Sidebar extends Component {
         onRequestClose={handleClose}
       >
         <List className={dockDrawer ? classes.topIconList : null}>
-          <ListItem button onClick={this.handleGoToDashboard}>
+          <ListItem
+            button
+            onClick={this.handleGoToDashboard}
+            className={c({[classes.menuActive]: this.checkSelected(/^\/admin$/)})}
+          >
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
-          <ListItem button onClick={this.handleGoToPostsPage}>
+          <ListItem
+            button
+            onClick={this.handleGoToPostsPage}
+            className={c({[classes.menuActive]: this.checkSelected(/^\/admin\/posts/)})}
+          >
             <ListItemIcon>
               <ArchiveIcon />
             </ListItemIcon>
@@ -73,7 +103,10 @@ export default class Sidebar extends Component {
           </ListItem>
         </List>
         <Divider />
-        <List className={classes.bottomIconList}>
+        <List
+          className={c(classes.bottomIconList, {[classes.menuActive]: this.checkSelected(/^\/admin\/settings/)})}
+          onClick={this.handleGoToSettings}
+        >
           <ListItem button>
             <ListItemIcon>
               <SettingsIcon />

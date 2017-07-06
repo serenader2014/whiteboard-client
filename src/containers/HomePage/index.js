@@ -27,7 +27,7 @@ class Content extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{paddingTop: 64}}>
         <Route exact path="/admin/posts" component={lazyLoadComponent(loadPosts)} />
         <Route exact path="/admin/posts/:id" component={lazyLoadComponent(loadEditPost)} />
       </div>
@@ -41,8 +41,7 @@ const homePageStyleSheet = createStyleSheet('Homepage', theme => ({
   },
   contentWrapper: {
     backgroundColor: theme.palette.background.default,
-    height: '100%',
-    paddingTop: 64
+    height: '100%'
   },
   desktopStyle: {
     paddingLeft: 240
@@ -112,6 +111,7 @@ export default class HomePage extends Component {
           dockDrawer={this.state.dockDrawer}
           open={this.state.showSidebar}
           handleClose={this.handleCloseDrawer}
+          location={location}
         />
         <div className={c(classes.contentWrapper, {[classes.desktopStyle]: !this.isMobileView})}>
           <Content
