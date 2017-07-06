@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 import { Paper, Typography, Divider, IconButton, Avatar } from 'material-ui'
 import { CircularProgress } from 'material-ui/Progress'
-import List, { ListItem, ListItemText, ListSubheader, ListItemSecondaryAction } from 'material-ui/List'
+import List, { ListItem, ListSubheader, ListItemSecondaryAction } from 'material-ui/List'
+import Menu, { MenuItem } from 'material-ui/Menu'
 import { withStyles, createStyleSheet } from 'material-ui/styles'
 import { pink } from 'material-ui/styles/colors'
 import propTypes from 'prop-types'
+import c from 'classnames'
 import { observer, inject } from 'mobx-react'
 import { Link } from 'react-router-dom'
-import { ModeEdit as EditIcon } from 'material-ui-icons'
+import {
+  MoreVert as MenuIcon,
+  ModeEdit as EditIcon,
+  Delete as DeleteIcon,
+  RemoveRedEye as PreviewIcon
+} from 'material-ui-icons'
 
 import { requestPostsList } from '../../actions/post'
 
@@ -54,6 +61,13 @@ const style = createStyleSheet('Posts', theme => ({
   postMeta: {
     display: 'flex',
     marginTop: '0.2em'
+  },
+  postMenuIcon: {
+    color: theme.palette.text.secondary,
+    marginRight: 10
+  },
+  deletePost: {
+    color: theme.palette.error[400]
   }
 }))
 
@@ -67,7 +81,9 @@ export default class Posts extends Component {
   }
 
   state = {
-    loadedData: false
+    loadedData: false,
+    postItemAnchorEl: null,
+    showPostMenu: false
   }
 
   componentDidMount() {
@@ -95,6 +111,19 @@ export default class Posts extends Component {
         </span>
       </span>
     )
+  }
+
+  handleClickPostMenu = e => {
+    this.setState({
+      showPostMenu: true,
+      postItemAnchorEl: e.currentTarget
+    })
+  }
+
+  handleClosePostMenu = () => {
+    this.setState({
+      showPostMenu: false
+    })
   }
 
   render() {
@@ -142,7 +171,7 @@ export default class Posts extends Component {
                       </Typography>
                     </div>
                     <ListItemSecondaryAction>
-                      <IconButton><EditIcon /></IconButton>
+                      <IconButton><MenuIcon onClick={this.handleClickPostMenu} /></IconButton>
                     </ListItemSecondaryAction>
                   </ListItem>
                   <Divider light/>
@@ -150,6 +179,22 @@ export default class Posts extends Component {
               ))
             }
           </List>
+          <Menu
+            open={this.state.showPostMenu}
+            anchorEl={this.state.postItemAnchorEl}
+            onRequestClose={this.handleClosePostMenu}
+          >
+            <MenuItem>
+              <PreviewIcon className={classes.postMenuIcon} /> Preview Post
+            </MenuItem>
+            <MenuItem>
+              <EditIcon className={classes.postMenuIcon} /> Edit Post
+            </MenuItem>
+            <Divider />
+            <MenuItem className={classes.deletePost}>
+              <DeleteIcon className={c([classes.postMenuIcon, classes.deletePost])} /> Delete Post
+            </MenuItem>
+          </Menu>
         </Paper>
       </div>
     )
