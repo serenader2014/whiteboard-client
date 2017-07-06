@@ -9,6 +9,7 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 
 import loadPosts from 'bundle-loader?lazy&name=posts!../Posts/index'
+import loadEditPost from 'bundle-loader?lazy&name=post-preview!../EditPost/index'
 
 import checkAuth from '../../utils/check-auth'
 import lazyLoadComponent from '../../utils/lazy-load-component'
@@ -28,6 +29,7 @@ class Content extends Component {
     return (
       <div>
         <Route exact path="/admin/posts" component={lazyLoadComponent(loadPosts)} />
+        <Route exact path="/admin/posts/:id" component={lazyLoadComponent(loadEditPost)} />
       </div>
     )
   }
