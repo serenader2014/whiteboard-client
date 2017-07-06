@@ -5,6 +5,7 @@ import propTypes from 'prop-types'
 import checkAuth from '../../utils/check-auth'
 
 
+@checkAuth(false)
 export default class Register extends Component {
   render() {
     return (

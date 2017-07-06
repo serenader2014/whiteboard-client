@@ -24,7 +24,8 @@ const style = createStyleSheet('Login', theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    backgroundColor: blueGrey[500]
+    backgroundColor: blueGrey[500],
+    flexDirection: 'column'
   },
   avatar: {
     width: 60,
@@ -45,6 +46,18 @@ const style = createStyleSheet('Login', theme => ({
   },
   button: {
     width: '100%'
+  },
+  registerLinkWrapper: {
+    marginTop: 10,
+    maxWidth: 300,
+    width: '100%',
+    textAlign: 'right'
+  },
+  registerLink: {
+    color: blueGrey[800],
+    '&:hover': {
+      color: blueGrey[900]
+    }
   }
 }))
 
@@ -70,13 +83,15 @@ export default class Login extends Component {
 
   handleChangeEmail = e => {
     this.setState({
-      email: e.target.value
+      email: e.target.value,
+      emailStatusOK: !e.error
     })
   }
 
   handleChangePassword = e => {
     this.setState({
-      password: e.target.value
+      password: e.target.value,
+      passwordStatusOK: !e.error
     })
   }
 
@@ -95,18 +110,6 @@ export default class Login extends Component {
         showDialog: true,
         message: e.message
       })
-    })
-  }
-
-  handleEmailStatusUpdate = obj => {
-    this.setState({
-      emailStatusOK: !obj.error
-    })
-  }
-
-  handlePasswordUpdate = obj => {
-    this.setState({
-      passwordStatusOK: !obj.error
     })
   }
 
@@ -133,7 +136,6 @@ export default class Login extends Component {
                   required
                   marginForm
                   validators={emailValidator}
-                  updateStatus={this.handleEmailStatusUpdate}
                 />
                 <TextField
                   label="Password"
@@ -144,7 +146,6 @@ export default class Login extends Component {
                   required
                   marginForm
                   validators={passwordValidator}
-                  updateStatus={this.handlePasswordUpdate}
                 />
               </div>
             </CardContent>
@@ -153,6 +154,9 @@ export default class Login extends Component {
             </CardActions>
           </form>
         </Card>
+        <Typography className={classes.registerLinkWrapper}>
+          <Link className={classes.registerLink} to="/admin/register">{'Don\'t have an account?'}</Link>
+        </Typography>
         <Dialog
           open={this.state.showDialog}
         >

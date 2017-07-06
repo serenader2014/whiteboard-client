@@ -12,6 +12,8 @@ export default function checkAuth(requireAuth) {
         history: propTypes.object
       }
 
+      redirect = true
+
       componentWillMount() {
         this.checkStatus()
       }
@@ -29,13 +31,17 @@ export default function checkAuth(requireAuth) {
         } else {
           if (isAuthenticated) {
             this.props.history.push('/admin')
+            this.redirect = true
           }
         }
+        this.redirect = (requireAuth && !isAuthenticated) || (!requireAuth && isAuthenticated)
       }
 
       render() {
         /* eslint-disable no-unused-vars */
         const { isAuthenticated } = this.props.userStore
+
+        if (this.redirect) return null
         return <Comp {...this.props} />
       }
     }

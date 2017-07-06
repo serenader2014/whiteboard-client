@@ -11,7 +11,7 @@ const pick = (obj, arr) => Object.keys(obj).filter(key => ~arr.indexOf(key)).red
 export default class TextField extends Component {
   static propTypes = {
     validation: propTypes.object,
-    onBlur: propTypes.func,
+    onChange: propTypes.func,
     validators: propTypes.array,
     value: propTypes.string,
     updateStatus: propTypes.func
@@ -22,7 +22,7 @@ export default class TextField extends Component {
     helperText: ' '
   }
 
-  handleOnBlur = e => {
+  handleOnChange = e => {
     if (this.props.validators) {
       /* 
         validation = [{
@@ -55,11 +55,12 @@ export default class TextField extends Component {
           helperText: ' '
         })
       }
-
-      this.props.updateStatus && this.props.updateStatus({ error: !isValid, message: !isValid ? message : '' })
-    } else if (this.props.onBlur) {
-      this.props.onBlur(e)
+      e.persist()
+      e.error = !isValid
+      e.message = !isValid ? message : ''
     }
+
+    this.props.onChange && this.props.onChange(e)
   }
 
   render() {
@@ -80,7 +81,7 @@ export default class TextField extends Component {
       'className'
     ])
     return (
-      <Text {...props} onBlur={this.handleOnBlur} error={this.state.error} helperText={this.state.helperText} />
+      <Text {...props} onChange={this.handleOnChange} error={this.state.error} helperText={this.state.helperText} />
     )
   }
 }
