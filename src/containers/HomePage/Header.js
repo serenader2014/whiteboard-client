@@ -43,7 +43,8 @@ export default class Header extends Component {
     userStore: propTypes.object,
     classes: propTypes.object,
     history: propTypes.object,
-    message: propTypes.object
+    message: propTypes.object,
+    handleClickMenu: propTypes.func
   }
 
   state = {
@@ -93,7 +94,7 @@ export default class Header extends Component {
     return (
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton color="contrast"><MenuIcon /></IconButton>
+          <IconButton color="contrast" onClick={this.props.handleClickMenu}><MenuIcon /></IconButton>
           <Typography color="inherit" type="title" className={classes.title}>Whiteboard Admin</Typography>
           <IconButton onClick={this.handleShowMenu}><Avatar src={currentUser.image || defaultAvatar} /></IconButton>
           <Menu

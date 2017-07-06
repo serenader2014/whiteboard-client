@@ -24,7 +24,7 @@ import defaultAvatar from '../../assets/images/avatar-placeholder.jpeg'
 
 const style = createStyleSheet('Posts', theme => ({
   container: {
-    padding: '80px 1.5em 1.5em',
+    padding: '1.5em',
     maxWidth: 800,
     margin: 'auto'
   },

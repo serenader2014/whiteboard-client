@@ -26,23 +26,40 @@ const style = createStyleSheet('Sidebar', theme => ({
 export default class Sidebar extends Component {
   static propTypes = {
     classes: propTypes.object,
-    history: propTypes.object
+    history: propTypes.object,
+    dockDrawer: propTypes.bool,
+    open: propTypes.bool,
+    handleClose: propTypes.func
   }
 
   handleGoToPostsPage = () => {
     this.props.history.push('/admin/posts')
+    this.closeDrawerIfNeeded()
+  }
+
+  handleGoToDashboard = () => {
+    this.props.history.push('/admin')
+    this.closeDrawerIfNeeded()
+  }
+
+  closeDrawerIfNeeded() {
+    const { dockDrawer, handleClose } = this.props
+    if (!dockDrawer) {
+      handleClose()
+    }
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, dockDrawer, open, handleClose } = this.props
     return (
       <Drawer
-        docked={true}
-        open={true}
+        docked={dockDrawer}
+        open={open}
         classes={{ paper: classes.paper }}
+        onRequestClose={handleClose}
       >
-        <List className={classes.topIconList}>
-          <ListItem button>
+        <List className={dockDrawer ? classes.topIconList : null}>
+          <ListItem button onClick={this.handleGoToDashboard}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
