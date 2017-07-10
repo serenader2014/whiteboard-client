@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { Paper, Typography, Divider, IconButton, Avatar, Button } from 'material-ui'
 import { CircularProgress } from 'material-ui/Progress'
 import List, { ListItem, ListSubheader, ListItemSecondaryAction } from 'material-ui/List'
@@ -19,7 +20,7 @@ import {
   Bookmark as CategoryIcon
 } from 'material-ui-icons'
 
-import { requestPostsList } from '../../actions/post'
+import { requestPostsList, requestDeletePost } from '../../actions/post'
 
 import { fromNow, formatStandard } from '../../utils/date-parser'
 
@@ -92,10 +93,29 @@ const style = createStyleSheet('Posts', theme => ({
   },
   marginRight10: {
     marginRight: 10
+  },
+  '@media (max-width: 800px)': {
+    postPreview: {
+      width: '100%',
+      height: '100%',
+      maxHeight: '100%'
+    },
+    postPreviewMeta: {
+      flexDirection: 'column',
+      alignItems: 'flex-start'
+    },
+    postPreviewMetaItem: {
+      marginRight: 0,
+      marginBottom: 20,
+      '&:last-child': {
+        marginBottom: 0
+      }
+    }
   }
 }))
 
 @inject('postStore')
+@inject('message')
 @observer
 @withStyles(style)
 export default class Posts extends Component {
@@ -140,7 +160,9 @@ export default class Posts extends Component {
   }
 
   handleDeletePost = () => {
-
+    this.props.message.showDialog({
+      dialogContent: <p>Hello world</p>
+    })
   }
 
   handlePreviewPost = (post) => {
@@ -190,7 +212,7 @@ export default class Posts extends Component {
             {
               postsList.map(post => (
                 <div key={post.id}>
-                  <ListItem button onClick={() => this.handlePreviewPost(post)}>
+                  <ListItem button onClick={e => this.handlePreviewPost(post)}>
                     <div>
                       <Typography type="subheading">
                         <Link className={classes.postTitle} to={`/admin/posts/${post.id}`}>{post.title}</Link>
@@ -217,7 +239,7 @@ export default class Posts extends Component {
             anchorEl={this.state.postItemAnchorEl}
             onRequestClose={this.handleClosePostMenu}
           >
-            <MenuItem onClick={this.handlePreviewPost}>
+            <MenuItem onClick={() => this.handlePreviewPost()}>
               <PreviewIcon className={classes.postMenuIcon} /> Preview Post
             </MenuItem>
             <MenuItem onClick={this.handleEditPost}>

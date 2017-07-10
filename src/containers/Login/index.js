@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import { Button, Avatar, Typography } from 'material-ui'
 import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog'
 import Card, { CardContent, CardActions } from 'material-ui/Card'
@@ -58,6 +59,12 @@ const style = createStyleSheet('Login', theme => ({
     '&:hover': {
       color: blueGrey[900]
     }
+  },
+  actionWrapper: {
+    flexDirection: 'column'
+  },
+  loginProgress: {
+    width: '100%'
   }
 }))
 
@@ -78,7 +85,8 @@ export default class Login extends Component {
     password: '',
     showDialog: false,
     emailStatusOK: false,
-    passwordStatusOK: false
+    passwordStatusOK: false,
+    isLogging: false
   }
 
   handleChangeEmail = e => {
@@ -102,20 +110,25 @@ export default class Login extends Component {
   }
 
   handleLogin = e => {
+    this.setState({
+      isLogging: true
+    })
     e.preventDefault()
     requestLogin({ email: this.state.email, password: this.state.password }).then(user => {
       this.props.userStore.setCurrentUser(user)
+      this.props.message.showSnackbar(`Welcome back! ${user.username}`)
     }).catch(e => {
       this.setState({
         showDialog: true,
-        message: e.message
+        message: e.message,
+        isLogging: false
       })
     })
   }
 
   render() {
     const { classes } = this.props
-    const { passwordStatusOK, emailStatusOK, email, password } = this.state
+    const { passwordStatusOK, emailStatusOK, email, password, isLogging } = this.state
 
     return (
       <div className={classes.wrapper}>
@@ -150,7 +163,15 @@ export default class Login extends Component {
               </div>
             </CardContent>
             <CardActions>
-              <Button disabled={!emailStatusOK || !passwordStatusOK} type="submit" className={classes.button} color="accent" raised>Login</Button>
+              <Button
+                disabled={!emailStatusOK || !passwordStatusOK || isLogging}
+                type="submit"
+                className={classes.button}
+                color="accent"
+                raised
+              >
+                {isLogging ? 'Logging in...' : 'Login'}
+              </Button>
             </CardActions>
           </form>
         </Card>

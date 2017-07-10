@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import { Snackbar } from 'material-ui'
+import Dialog, { DialogTitle, DialogContent, DialogActions } from 'material-ui/Dialog'
 import { MuiThemeProvider } from 'material-ui/styles'
 import { observer, inject } from 'mobx-react'
 import propTypes from 'prop-types'
@@ -12,9 +13,49 @@ import lazyLoadComponent from './utils/lazy-load-component'
 
 import { requestCurrentUser } from './actions/user'
 
-@inject('appStore')
-@inject('userStore')
 @inject('message')
+@observer
+class Message extends Component {
+  static propTypes = {
+    message: propTypes.object
+  }
+
+  render() {
+    const {
+      openSnackbar,
+      snackbarMessage,
+      snackbarAction,
+      snackbarAutoHideDuration,
+      snackbarOnRequestClose,
+      snackbarAnchorOrigin,
+      openDialog,
+      dialogContent,
+      dialogTitle,
+      dialogActions
+    } = this.props.message
+    return (
+      <div>
+        <Snackbar
+          open={openSnackbar}
+          message={snackbarMessage}
+          action={snackbarAction}
+          autoHideDuration={snackbarAutoHideDuration}
+          onRequestClose={snackbarOnRequestClose}
+          anchorOrigin={snackbarAnchorOrigin}
+        />
+        <Dialog
+          open={openDialog}
+        >
+          {dialogTitle && <DialogTitle>{dialogTitle}</DialogTitle>}
+          {dialogContent && <DialogContent>{dialogContent}</DialogContent>}
+          {dialogActions && <DialogActions>{dialogActions}</DialogActions>}
+        </Dialog>
+      </div>
+    )
+  }
+}
+
+@inject('userStore')
 @observer
 export default class App extends Component {
   static propTypes = {
@@ -30,8 +71,6 @@ export default class App extends Component {
 
   render() {
     /* eslint-disable no-unused-vars */
-    const { theme, themeType } = this.props.appStore
-    const { open, message, action, autoHideDuration, onRequestClose, anchorOrigin } = this.props.message
     return (
       <MuiThemeProvider>
         <Router>
@@ -42,14 +81,7 @@ export default class App extends Component {
               <Route path="/admin" component={lazyLoadComponent(loadHomePage)} />
               <Redirect from="*" to="/admin" />
             </Switch>
-            <Snackbar
-              open={open}
-              message={message}
-              action={action}
-              autoHideDuration={autoHideDuration}
-              onRequestClose={onRequestClose}
-              anchorOrigin={anchorOrigin}
-            />
+            <Message />
           </div>
         </Router>
       </MuiThemeProvider>
