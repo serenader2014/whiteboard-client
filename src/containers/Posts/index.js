@@ -16,10 +16,11 @@ import {
   Delete as DeleteIcon,
   RemoveRedEye as PreviewIcon,
   DateRange as DateIcon,
-  Bookmark as CategoryIcon
+  Bookmark as CategoryIcon,
+  Add as AddIcon
 } from 'material-ui-icons'
 
-import { requestPostsList, requestDeletePost } from '../../actions/post'
+import { requestEditablePostsList, requestDeletePost, requestCreatePost } from '../../actions/post'
 
 import { fromNow, formatStandard } from '../../utils/date-parser'
 
@@ -93,6 +94,14 @@ const style = createStyleSheet('Posts', theme => ({
   marginRight10: {
     marginRight: 10
   },
+  fab: {
+    position: 'fixed',
+    bottom: 80,
+    right: 65
+  },
+  draftItem: {
+    background: theme.palette.background.default
+  },
   '@media (max-width: 800px)': {
     postPreview: {
       width: '100%',
@@ -130,11 +139,12 @@ export default class Posts extends Component {
     postItemAnchorEl: null,
     showPostMenu: false,
     showPostPreview: false,
-    currentPost: { user: {}, category: {} }
+    currentPost: { user: {}, category: {} },
+    creatingPost: false
   }
 
   componentDidMount() {
-    requestPostsList().then(data => {
+    requestEditablePostsList().then(data => {
       this.props.postStore.updatePostsList(data)
       this.setState({
         loadedData: true
@@ -192,6 +202,16 @@ export default class Posts extends Component {
     })
   }
 
+  handleCreateNewPost = () => {
+    this.setState({
+      creatingPost: true
+    })
+
+    requestCreatePost().then(post => {
+      this.props.history.push(`/admin/posts/${post.id}`)
+    })
+  }
+
   render() {
     const {
       classes,
@@ -201,7 +221,7 @@ export default class Posts extends Component {
       }
     } = this.props
 
-    const { currentPost } = this.state
+    const { currentPost, creatingPost } = this.state
 
     if (!this.state.loadedData) {
       return (
@@ -225,7 +245,11 @@ export default class Posts extends Component {
             {
               postsList.map(post => (
                 <div key={post.id}>
-                  <ListItem button onClick={e => this.handlePreviewPost(post)}>
+                  <ListItem
+                    className={c({[classes.draftItem]: post.status === 'draft'})}
+                    button
+                    onClick={e => this.handlePreviewPost(post)}
+                  >
                     <div>
                       <Typography type="subheading">
                         <Link className={classes.postTitle} to={`/admin/posts/${post.id}`}>{post.title}</Link>
@@ -235,7 +259,7 @@ export default class Posts extends Component {
                           <Avatar className={classes.postAuthorAvatar} src={post.user.image || defaultAvatar} />
                           {post.user.username}
                         </Link>
-                        on {fromNow(post.publish_at)}
+                        { post.status === 'published' && `on ${fromNow(post.publish_at)}` }
                       </Typography>
                     </div>
                     <ListItemSecondaryAction>
@@ -290,6 +314,15 @@ export default class Posts extends Component {
             <Button color="accent" onClick={this.handleDeletePost}>Delete</Button>
           </DialogActions>
         </Dialog>
+        <Button
+          disabled={creatingPost}
+          onClick={this.handleCreateNewPost}
+          className={classes.fab}
+          fab
+          color="accent"
+        >
+          <AddIcon />
+        </Button>
       </div>
     )
   }

@@ -5,6 +5,7 @@ export default function parse(input) {
 }
 
 export function fromNow(input) {
+  console.log(input)
   return parse(input).fromNow()
 }
 
