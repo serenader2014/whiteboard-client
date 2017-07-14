@@ -24,10 +24,22 @@ export default class MessageStore {
     }
   }
 
+  hideSnackbar() {
+    this.openSnackbar = false
+    this.snackbarMessage = ''
+  }
+
   showDialog(options) {
     this.openDialog = true
     this.dialogContent = options.dialogContent
     this.dialogTitle = options.dialogTitle
     this.dialogActions = options.dialogActions
+  }
+
+  hideDialog() {
+    this.openDialog = false
+    this.dialogContent = null
+    this.dialogTitle = null
+    this.dialogActions = null
   }
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import { Paper, Typography, Divider, IconButton, Avatar, Button } from 'material-ui'
 import { CircularProgress } from 'material-ui/Progress'
 import List, { ListItem, ListSubheader, ListItemSecondaryAction } from 'material-ui/List'
@@ -121,7 +120,9 @@ const style = createStyleSheet('Posts', theme => ({
 export default class Posts extends Component {
   static propTypes = {
     classes: propTypes.object,
-    postStore: propTypes.object
+    postStore: propTypes.object,
+    message: propTypes.object,
+    history: propTypes.object
   }
 
   state = {
@@ -156,12 +157,24 @@ export default class Posts extends Component {
   }
 
   handleEditPost = () => {
-
+    this.props.history.push(`/admin/posts/${this.state.currentPost.id}`)
   }
 
   handleDeletePost = () => {
+    this.handleClosePostMenu()
     this.props.message.showDialog({
-      dialogContent: <p>Hello world</p>
+      dialogContent: `Deleting post: ${this.state.currentPost.title} , this action can not be undone, are you sure?`,
+      dialogActions: [
+        <Button onClick={() => this.props.message.hideDialog()} key="cancel">Cancel</Button>,
+        <Button onClick={this.deletePost} color="accent" key="ok">Ok</Button>
+      ]
+    })
+  }
+
+  deletePost = () => {
+    this.props.message.hideDialog()
+    requestDeletePost(this.state.currentPost.id).then(res => {
+      this.props.postStore.deletePost(this.state.currentPost.id)
     })
   }
 
@@ -274,7 +287,7 @@ export default class Posts extends Component {
           <DialogActions>
             <Button onClick={this.handleClosePostPreview}>Close</Button>
             <Button onClick={this.handleEditPost}>Edit</Button>
-            <Button onClick={this.handleDeletePost}>Delete</Button>
+            <Button color="accent" onClick={this.handleDeletePost}>Delete</Button>
           </DialogActions>
         </Dialog>
       </div>

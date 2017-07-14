@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
-import { Snackbar } from 'material-ui'
+import { Snackbar, Typography } from 'material-ui'
 import Dialog, { DialogTitle, DialogContent, DialogActions } from 'material-ui/Dialog'
 import { MuiThemeProvider } from 'material-ui/styles'
 import { observer, inject } from 'mobx-react'
@@ -47,7 +47,7 @@ class Message extends Component {
           open={openDialog}
         >
           {dialogTitle && <DialogTitle>{dialogTitle}</DialogTitle>}
-          {dialogContent && <DialogContent>{dialogContent}</DialogContent>}
+          {dialogContent && <DialogContent><Typography component="div">{dialogContent}</Typography></DialogContent>}
           {dialogActions && <DialogActions>{dialogActions}</DialogActions>}
         </Dialog>
       </div>
