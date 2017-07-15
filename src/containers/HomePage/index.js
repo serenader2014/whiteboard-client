@@ -18,9 +18,7 @@ const contentStyle = createStyleSheet('Content', {
   wrapper: {
     paddingTop: 64,
     flex: 1,
-    display: 'flex',
-    maxWidth: 800,
-    margin: '0 auto'
+    display: 'flex'
   }
 })
 
