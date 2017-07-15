@@ -18,4 +18,8 @@ export default class PostStore {
   setCurrentPost(post) {
     this.currentPost = post
   }
+
+  updateCurrentPost(post) {
+    Object.assign(this.currentPost, post)
+  }
 }

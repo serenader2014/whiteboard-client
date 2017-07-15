@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { Paper, Typography, Divider, IconButton, Avatar, Button } from 'material-ui'
-import { CircularProgress } from 'material-ui/Progress'
-import List, { ListItem, ListSubheader, ListItemSecondaryAction } from 'material-ui/List'
-import Menu, { MenuItem } from 'material-ui/Menu'
-import Dialog, { DialogTitle, DialogContent, DialogActions } from 'material-ui/Dialog'
-import { withStyles, createStyleSheet } from 'material-ui/styles'
-import { pink } from 'material-ui/styles/colors'
 import propTypes from 'prop-types'
 import c from 'classnames'
 import { observer, inject } from 'mobx-react'
 import { Link } from 'react-router-dom'
+
+import { Paper, Typography, Divider, IconButton, Avatar, Button } from 'material-ui'
+import List, { ListItem, ListSubheader, ListItemSecondaryAction } from 'material-ui/List'
+import Menu, { MenuItem } from 'material-ui/Menu'
+import Dialog, { DialogTitle, DialogContent, DialogActions } from 'material-ui/Dialog'
+import { withStyles, createStyleSheet } from 'material-ui/styles'
+import { pink } from 'material-ui/colors'
 import {
   MoreVert as MenuIcon,
   ModeEdit as EditIcon,
@@ -20,6 +20,8 @@ import {
   Add as AddIcon
 } from 'material-ui-icons'
 
+import Loading from '../../components/Loading'
+
 import { requestEditablePostsList, requestDeletePost, requestCreatePost } from '../../actions/post'
 
 import { fromNow, formatStandard } from '../../utils/date-parser'
@@ -29,18 +31,10 @@ import defaultAvatar from '../../assets/images/avatar-placeholder.jpeg'
 const style = createStyleSheet('Posts', theme => ({
   container: {
     padding: '1.5em',
-    maxWidth: 800,
-    margin: 'auto'
+    flex: 1
   },
   paper: {
     padding: '1em'
-  },
-  progressWrapper: {
-    paddingTop: 200,
-    textAlign: 'center'
-  },
-  progressText: {
-    marginTop: 10
   },
   postAuthor: {
     color: pink[400],
@@ -225,16 +219,7 @@ export default class Posts extends Component {
 
     if (!this.state.loadedData) {
       return (
-        <div className={classes.progressWrapper}>
-          <CircularProgress />
-          <Typography
-            type="body1"
-            color="secondary"
-            className={classes.progressText}
-          >
-            Loading posts list
-          </Typography>
-        </div>
+        <Loading />
       )
     }
 

@@ -14,6 +14,17 @@ import loadEditPost from 'bundle-loader?lazy&name=post-preview!../EditPost/index
 import checkAuth from '../../utils/check-auth'
 import lazyLoadComponent from '../../utils/lazy-load-component'
 
+const contentStyle = createStyleSheet('Content', {
+  wrapper: {
+    paddingTop: 64,
+    flex: 1,
+    display: 'flex',
+    maxWidth: 800,
+    margin: '0 auto'
+  }
+})
+
+@withStyles(contentStyle)
 class Content extends Component {
   static propTypes = {
     location: propTypes.object,
@@ -27,7 +38,7 @@ class Content extends Component {
 
   render() {
     return (
-      <div style={{paddingTop: 64}}>
+      <div className={this.props.classes.wrapper}>
         <Route exact path="/admin/posts" component={lazyLoadComponent(loadPosts)} />
         <Route exact path="/admin/posts/:id" component={lazyLoadComponent(loadEditPost)} />
       </div>
@@ -41,7 +52,8 @@ const homePageStyleSheet = createStyleSheet('Homepage', theme => ({
   },
   contentWrapper: {
     backgroundColor: theme.palette.background.default,
-    height: '100%'
+    height: '100%',
+    display: 'flex'
   },
   desktopStyle: {
     paddingLeft: 240

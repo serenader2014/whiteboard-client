@@ -3,7 +3,7 @@ import { Button, Avatar, Typography } from 'material-ui'
 import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog'
 import Card, { CardContent, CardActions } from 'material-ui/Card'
 import { withStyles, createStyleSheet } from 'material-ui/styles'
-import { blueGrey } from 'material-ui/styles/colors'
+import { blueGrey } from 'material-ui/colors'
 
 import { AccountCircle as AccountIcon } from 'material-ui-icons'
 
